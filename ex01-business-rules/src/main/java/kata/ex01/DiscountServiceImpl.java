@@ -5,7 +5,7 @@ import kata.ex01.model.HighwayDrive;
 /**
  * @author kawasima
  */
-public class DisountServiceImpl implements DiscountService {
+public class DiscountServiceImpl implements DiscountService {
     @Override
     public long calc(HighwayDrive drive) {
         return 0;
