@@ -24,7 +24,7 @@ public class DiscountServiceTest {
 
     @Before
     public void setUp() {
-        discountService = new DisountServiceImpl();
+        discountService = new DiscountServiceImpl();
     }
 
     @Test

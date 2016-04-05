@@ -15,7 +15,7 @@ import static kata.ex01.model.VehicleFamily.*;
 /**
  * @author kawasima
  */
-public class DisountServiceImpl implements DiscountService {
+public class DiscountServiceImpl implements DiscountService {
     @Override
     public long calc(HighwayDrive drive) {
         // 入場と出場の時刻が逆転していればエラーとする
