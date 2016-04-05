@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * @author kawasima
  */
-public class DisountServiceImpl implements DiscountService {
+public class DiscountServiceImpl implements DiscountService {
     List<DiscountRule> discountRules;
 
-    public DisountServiceImpl() {
+    public DiscountServiceImpl() {
         discountRules = Arrays.asList(
                 new DiscountInMorningOrEvening(),
                 new DiscountOnHoliday(),
