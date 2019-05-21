@@ -2,14 +2,14 @@ package kata.ex01;
 
 import kata.ex01.model.Driver;
 import kata.ex01.model.HighwayDrive;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static kata.ex01.model.RouteType.*;
-import static kata.ex01.model.VehicleFamily.*;
-import static org.junit.Assert.*;
+import static kata.ex01.model.RouteType.RURAL;
+import static kata.ex01.model.VehicleFamily.STANDARD;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author kawasima
@@ -22,8 +22,8 @@ public class DiscountServiceTest {
         return driver;
     }
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         discountService = new DiscountServiceImpl();
     }
 
@@ -36,7 +36,7 @@ public class DiscountServiceTest {
         drive.setVehicleFamily(STANDARD);
         drive.setRouteType(RURAL);
 
-        assertEquals(50, discountService.calc(drive));
+        assertThat(discountService.calc(drive)).isEqualTo(50);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class DiscountServiceTest {
         drive.setVehicleFamily(STANDARD);
         drive.setRouteType(RURAL);
 
-        assertEquals(30, discountService.calc(drive));
+        assertThat(discountService.calc(drive)).isEqualTo(30);
     }
 
 }
