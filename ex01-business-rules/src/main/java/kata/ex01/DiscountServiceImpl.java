@@ -108,5 +108,4 @@ public class DiscountServiceImpl implements DiscountService {
             }
         }
         return 0;
-    }
-}
+    }}

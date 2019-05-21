@@ -1,12 +1,9 @@
 package kata.ex01.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -24,11 +21,40 @@ public class HolidayUtils {
     private static final EnumSet HOLIDAYS_OF_WEEK = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
 
     private static final Map<LocalDate, String> holidays = new HashMap<>();
+
+    private static boolean isCacheAvailable(File cacheFile) {
+        Instant now = Instant.now();
+
+        return cacheFile.exists() && (
+                LocalDateTime.ofEpochSecond(cacheFile.lastModified() / 1000, (int)((cacheFile.lastModified() % 1000) * 1000), ZoneId.systemDefault().getRules().getOffset(now)).getYear()
+                        == LocalDateTime.ofInstant(now, ZoneId.systemDefault()).getYear());
+    }
+
+    private static OutputStream createOutputStream(File file) throws FileNotFoundException {
+        if (isCacheAvailable(file)) {
+            return new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+                    // doNothing
+                }
+            };
+        } else {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            return new FileOutputStream(file);
+
+        }
+    }
+
     static {
         try {
-            URL url = new URL("https://calendar.google.com/calendar/ical/ja.japanese%23holiday%40group.v.calendar.google.com/public/basic.ics");
+            File cacheFile = new File("target/basic.ics");
+            URL url = cacheFile.exists()? cacheFile.toURI().toURL() : new URL("https://calendar.google.com/calendar/ical/ja.japanese%23holiday%40group.v.calendar.google.com/public/basic.ics");
+
             try (InputStream in = url.openConnection().getInputStream();
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(createOutputStream(cacheFile), StandardCharsets.UTF_8))) {
                 String line;
                 String name = null;
                 LocalDate date = null;
@@ -51,6 +77,7 @@ public class HolidayUtils {
                     } else if ("END:VEVENT".equals(line)) {
                         holidays.put(date, name);
                     }
+                    writer.append(line).append("\n");
                 }
             }
         } catch (IOException e) {
