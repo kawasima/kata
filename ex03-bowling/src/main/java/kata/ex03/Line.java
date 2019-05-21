@@ -6,6 +6,11 @@ import java.io.Writer;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 一連のフレームを表すフレームライン.
+ *
+ * @author kawasima
+ */
 public class Line {
     private List<Frame> frames;
     protected Line(List<Frame> frames) {
