@@ -10,7 +10,6 @@
     </parent>
 
     <groupId>net.unit8.kata</groupId>
-    <artifactId>ex01-business-rules</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <artifactId>ex03-bowling</artifactId>
     <packaging>jar</packaging>
 </project>

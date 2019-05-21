@@ -31,5 +31,4 @@ public class DiscountServiceImpl implements DiscountService {
                 .max(Comparator.naturalOrder())
                 .orElse(0l);
     }
-
 }

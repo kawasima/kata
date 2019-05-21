@@ -13,9 +13,9 @@ import static org.junit.Assert.*;
 public class HolidayUtilsTest {
     @Test
     public void test元日は休日() {
-        assertTrue(HolidayUtils.isHoliday(LocalDate.of(2016, 1, 1)));
-        assertTrue(HolidayUtils.isHoliday(LocalDate.of(2016, 1, 2)));
-        assertTrue(HolidayUtils.isHoliday(LocalDate.of(2016, 1, 3)));
-        assertFalse(HolidayUtils.isHoliday(LocalDate.of(2016, 1, 4)));
+        assertTrue(HolidayUtils.isHoliday(LocalDate.of(2019, 1, 1)));
+        assertFalse(HolidayUtils.isHoliday(LocalDate.of(2019, 1, 2)));
+        assertFalse(HolidayUtils.isHoliday(LocalDate.of(2019, 1, 3)));
+        assertTrue(HolidayUtils.isHoliday(LocalDate.of(2019, 1, 5)));
     }
 }

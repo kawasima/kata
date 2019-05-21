@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>net.unit8.kata</groupId>
-    <artifactId>ex01-business-rules</artifactId>
+    <artifactId>ex02-pluggable</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 </project>
