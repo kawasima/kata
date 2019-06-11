@@ -6,8 +6,8 @@ package kata.ex01.model;
  * @author kawasima
  */
 public enum RouteType {
-    /** 都市部 */
-    RURAL,
     /** 地方部 */
+    RURAL,
+    /** 都市部 */
     URBAN,
 }
