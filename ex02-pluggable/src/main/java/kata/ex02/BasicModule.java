@@ -13,5 +13,6 @@ public class BasicModule extends AbstractModule {
         bind(OrderService.class).to(OrderServiceImpl.class);
         bind(ApiSender.class);
         bind(MailSender.class);
+        bind(PluginRegistry.class);
     }
 }

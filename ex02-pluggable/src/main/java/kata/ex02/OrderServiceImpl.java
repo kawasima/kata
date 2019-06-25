@@ -6,20 +6,23 @@ import kata.ex02.repository.OrderRepository;
 import kata.ex02.util.ApiSender;
 import kata.ex02.util.MailSender;
 
+import static kata.ex02.HookPoint.AFTER_ORDER_SAVE;
+import static kata.ex02.HookPoint.BEFORE_ORDER_SAVE;
+
 public class OrderServiceImpl implements OrderService {
     private OrderRepository repository;
-    private ApiSender apiSender;
-    private MailSender mailSender;
+    private PluginRegistry pluginRegistry;
 
     @Inject
-    public OrderServiceImpl(OrderRepository repository, ApiSender apiSender, MailSender mailSender) {
+    public OrderServiceImpl(OrderRepository repository, PluginRegistry pluginRegistry) {
         this.repository = repository;
-        this.apiSender = apiSender;
-        this.mailSender = mailSender;
+        this.pluginRegistry = pluginRegistry;
     }
 
     @Override
     public void order(Order order) {
+        pluginRegistry.runPlugins(BEFORE_ORDER_SAVE, order);
         repository.save(order);
+        pluginRegistry.runPlugins(AFTER_ORDER_SAVE, order);
     }
 }
