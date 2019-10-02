@@ -51,4 +51,15 @@ public class DiscountServiceTest {
         assertThat(discountService.calc(drive)).isEqualTo(30);
     }
 
+    @Test
+    public void test深夜は深夜割が適用される() {
+        HighwayDrive drive = new HighwayDrive();
+        drive.setEnteredAt(LocalDateTime.of(2019, 10, 2, 23, 0));
+        drive.setExitedAt(LocalDateTime.of(2019, 10, 3, 5, 0));
+        drive.setDriver(driver(1));
+        drive.setVehicleFamily(STANDARD);
+        drive.setRouteType(RURAL);
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
+    }
 }

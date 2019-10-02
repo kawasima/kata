@@ -13,5 +13,16 @@ public enum VehicleFamily {
     /** 二輪車 */
     MOTORCYCLE,
     /** その他 */
-    OTHER
+    OTHER;
+
+    public boolean isHolidayDiscountVehicle() {
+        switch (this) {
+            case STANDARD:
+            case MINI:
+            case MOTORCYCLE:
+                return true;
+        }
+
+        return false;
+    }
 }
