@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import static kata.ex01.model.RouteType.RURAL;
 import static kata.ex01.model.VehicleFamily.STANDARD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 /**
  * @author kawasima
@@ -37,6 +38,14 @@ public class DiscountServiceTest {
         drive.setRouteType(RURAL);
 
         assertThat(discountService.calc(drive)).isEqualTo(50);
+
+        drive.setDriver(driver(5));
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
+
+        drive.setDriver(driver(9));
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
     }
 
     @Test
