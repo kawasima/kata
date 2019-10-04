@@ -49,7 +49,7 @@ public class DiscountServiceTest {
     }
 
     @Test
-    public void test休日朝夕は休日割が適用される() {
+    public void test休日は休日割が適用される() {
         HighwayDrive drive = new HighwayDrive();
         drive.setEnteredAt(LocalDateTime.of(2016, 4, 1, 23, 0));
         drive.setExitedAt(LocalDateTime.of(2016, 4, 2, 6, 30));
@@ -70,5 +70,17 @@ public class DiscountServiceTest {
         drive.setRouteType(RURAL);
 
         assertThat(discountService.calc(drive)).isEqualTo(30);
+    }
+
+    @Test
+    public void test平日朝夕割引と深夜() {
+        HighwayDrive drive = new HighwayDrive();
+        drive.setEnteredAt(LocalDateTime.of(2019, 10, 3, 23, 0));
+        drive.setExitedAt(LocalDateTime.of(2019, 10, 4, 6, 0));
+        drive.setDriver(driver(10));
+        drive.setVehicleFamily(STANDARD);
+        drive.setRouteType(RURAL);
+
+        assertThat(discountService.calc(drive)).isEqualTo(50);
     }
 }
