@@ -74,6 +74,7 @@ public class DiscountServiceTest {
 
     @Test
     public void test平日朝夕割引と深夜() {
+
         HighwayDrive drive = new HighwayDrive();
         drive.setEnteredAt(LocalDateTime.of(2019, 10, 3, 23, 0));
         drive.setExitedAt(LocalDateTime.of(2019, 10, 4, 6, 0));
