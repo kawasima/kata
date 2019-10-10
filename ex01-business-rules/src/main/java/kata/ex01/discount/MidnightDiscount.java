@@ -1,6 +1,7 @@
 package kata.ex01.discount;
 
 import kata.ex01.model.HighwayDrive;
+import kata.ex01.model.Threshold;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,12 +13,10 @@ public class MidnightDiscount {
     public static boolean isDiscount(HighwayDrive drive) {
         var enteredAt = drive.getEnteredAt().toLocalDate();
         var exitedAt = drive.getExitedAt().toLocalDate();
-        var rsToday = LocalDateTime.of(enteredAt, from);
-        var reToday = LocalDateTime.of(enteredAt, to);
-        var rsTomorrow = LocalDateTime.of(exitedAt, from);
-        var reTomorrow = LocalDateTime.of(exitedAt, to);
 
-        return drive.isDriving(rsToday, reToday) || drive.isDriving(rsTomorrow, reTomorrow);
+        var threshold = new Threshold(from, to, enteredAt, exitedAt);
+
+        return drive.isDriving(threshold.getRsToday(), threshold.getReToday()) || drive.isDriving(threshold.getRsTomorrow(), threshold.getReTomorrow());
     }
 
     public static int getRate() {
