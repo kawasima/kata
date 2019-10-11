@@ -1,12 +1,13 @@
 package kata.ex01;
 
+import kata.ex01.discount.HolidayDiscount;
+import kata.ex01.discount.MidnightDiscount;
+import kata.ex01.discount.WeekdayDiscount;
 import kata.ex01.model.HighwayDrive;
-import kata.ex01.model.RouteType;
-import kata.ex01.model.VehicleFamily;
-import kata.ex01.util.HolidayUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author kawasima
@@ -14,25 +15,31 @@ import java.time.LocalDateTime;
 public class DiscountServiceImpl implements DiscountService {
     @Override
     public long calc(HighwayDrive drive) {
+        List<Integer> discountRates = new ArrayList<>();
+
         /**
-         * 休日料金
+         * 平日朝夕割引
          */
-        if (drive.getVehicleFamily().isHolidayDiscountVehicle()
-        && (HolidayUtils.isHoliday(drive.getEnteredAt().toLocalDate()) || HolidayUtils.isHoliday(drive.getExitedAt().toLocalDate()))
-        && drive.getRouteType().equals(RouteType.RURAL)) {
-            return 30;
+        if (WeekdayDiscount.isDiscount(drive)) {
+            discountRates.add(WeekdayDiscount.getRate(drive));
         }
 
         /**
-         * 深夜料金
+         * 休日割引
          */
-//        if(drive.getEnteredAt().getHour() <= 4 || drive.getExitedAt().getHour() <= 4 || () ) {
-//               return 30;
-//        }
-//            if (drive.getEnteredAt().getHour() >= 4){
-//
-//            }
+        if (HolidayDiscount.isDiscount(drive)) {
+            discountRates.add(HolidayDiscount.getRate());
+        }
 
-        return 0;
+        /**
+         * 深夜割引
+         */
+        if (MidnightDiscount.isDiscount(drive)) {
+            discountRates.add(MidnightDiscount.getRate());
+        }
+
+        return discountRates.stream()
+                .max(Comparator.naturalOrder())
+                .orElse(0);
     }
 }

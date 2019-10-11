@@ -17,6 +17,12 @@ public class HighwayDrive implements Serializable {
     public HighwayDrive() {
     }
 
+    public boolean isDriving(LocalDateTime rs, LocalDateTime re)
+    {
+        return (this.getEnteredAt().isBefore(re) || this.getEnteredAt().isEqual(re))
+                && (this.getExitedAt().isAfter(rs) || this.getExitedAt().isEqual(rs));
+    }
+
     public LocalDateTime getEnteredAt() {
         return this.enteredAt;
     }

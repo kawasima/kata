@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import static kata.ex01.model.RouteType.RURAL;
 import static kata.ex01.model.VehicleFamily.STANDARD;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
 
 /**
  * @author kawasima
@@ -37,10 +38,18 @@ public class DiscountServiceTest {
         drive.setRouteType(RURAL);
 
         assertThat(discountService.calc(drive)).isEqualTo(50);
+
+        drive.setDriver(driver(5));
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
+
+        drive.setDriver(driver(9));
+
+        assertThat(discountService.calc(drive)).isEqualTo(30);
     }
 
     @Test
-    public void test休日朝夕は休日割が適用される() {
+    public void test休日は休日割が適用される() {
         HighwayDrive drive = new HighwayDrive();
         drive.setEnteredAt(LocalDateTime.of(2016, 4, 1, 23, 0));
         drive.setExitedAt(LocalDateTime.of(2016, 4, 2, 6, 30));
@@ -61,5 +70,18 @@ public class DiscountServiceTest {
         drive.setRouteType(RURAL);
 
         assertThat(discountService.calc(drive)).isEqualTo(30);
+    }
+
+    @Test
+    public void test平日朝夕割引と深夜() {
+
+        HighwayDrive drive = new HighwayDrive();
+        drive.setEnteredAt(LocalDateTime.of(2019, 10, 3, 23, 0));
+        drive.setExitedAt(LocalDateTime.of(2019, 10, 4, 6, 0));
+        drive.setDriver(driver(10));
+        drive.setVehicleFamily(STANDARD);
+        drive.setRouteType(RURAL);
+
+        assertThat(discountService.calc(drive)).isEqualTo(50);
     }
 }
