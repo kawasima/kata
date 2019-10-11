@@ -2,6 +2,7 @@ package kata.ex01.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * @author kawasima
@@ -17,10 +18,16 @@ public class HighwayDrive implements Serializable {
     public HighwayDrive() {
     }
 
-    public boolean isDriving(LocalDateTime rs, LocalDateTime re)
+    public boolean isDriving(LocalTime from, LocalTime to)
     {
-        return (this.getEnteredAt().isBefore(re) || this.getEnteredAt().isEqual(re))
-                && (this.getExitedAt().isAfter(rs) || this.getExitedAt().isEqual(rs));
+        var enteredAt = this.getEnteredAt().toLocalDate();
+        var exitedAt = this.getExitedAt().toLocalDate();
+        var threshold = new Threshold(from, to, enteredAt, exitedAt);
+
+        return ((this.getEnteredAt().isBefore(threshold.getReToday()) || this.getEnteredAt().isEqual(threshold.getReToday()))
+                && (this.getExitedAt().isAfter(threshold.getRsToday()) || this.getExitedAt().isEqual(threshold.getRsToday())))
+                || ((this.getEnteredAt().isBefore(threshold.getReTomorrow()) || this.getEnteredAt().isEqual(threshold.getReTomorrow()))
+                && (this.getExitedAt().isAfter(threshold.getRsTomorrow()) || this.getExitedAt().isEqual(threshold.getRsTomorrow())));
     }
 
     public LocalDateTime getEnteredAt() {
