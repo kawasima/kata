@@ -1,4 +1,4 @@
-package kata.ex01.discount;
+package kata.ex01.model.discount;
 
 import kata.ex01.model.HighwayDrive;
 import kata.ex01.model.RouteType;

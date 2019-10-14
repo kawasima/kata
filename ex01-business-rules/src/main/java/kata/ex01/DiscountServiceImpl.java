@@ -1,8 +1,8 @@
 package kata.ex01;
 
-import kata.ex01.discount.HolidayDiscount;
-import kata.ex01.discount.MidnightDiscount;
-import kata.ex01.discount.WeekdayDiscount;
+import kata.ex01.model.discount.HolidayDiscount;
+import kata.ex01.model.discount.MidnightDiscount;
+import kata.ex01.model.discount.WeekdayDiscount;
 import kata.ex01.model.HighwayDrive;
 
 import java.util.ArrayList;
