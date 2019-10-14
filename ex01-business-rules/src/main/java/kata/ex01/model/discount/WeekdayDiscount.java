@@ -4,52 +4,69 @@ import kata.ex01.model.HighwayDrive;
 import kata.ex01.model.RouteType;
 import kata.ex01.util.HolidayUtils;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class WeekdayDiscount {
-    public static boolean isDiscount(HighwayDrive drive) {
-        var enteredAt = drive.getEnteredAt().toLocalDate();
-        var exitedAt = drive.getExitedAt().toLocalDate();
-        var routeType = drive.getRouteType();
-
-        return !HolidayUtils.isHoliday(enteredAt) && !HolidayUtils.isHoliday(exitedAt)
-                && (isMorning(drive) || isEvening(drive))
-                && (isMiddleUser(drive) || isHeavyUser(drive))
-                && routeType.equals(RouteType.RURAL);
+public class WeekdayDiscount extends Discount {
+    public WeekdayDiscount(HighwayDrive drive) {
+        super(drive);
     }
 
-    private static boolean isMorning(HighwayDrive drive) {
-        var from = LocalTime.of(6, 0);
-        var to = LocalTime.of(9, 0);
+    @Override
+    protected int getRate() {
+        if (!isDiscount()) {
+            return 0;
+        }
 
-        return drive.isDriving(from, to);
-    }
-
-    private static boolean isEvening(HighwayDrive drive) {
-        var from = LocalTime.of(17, 0);
-        var to = LocalTime.of(20, 0);
-
-        return drive.isDriving(from, to);
-    }
-
-    private static boolean isMiddleUser(HighwayDrive drive) {
-        return 5 <= drive.getDriver().getCountPerMonth()
-                && drive.getDriver().getCountPerMonth() <= 9;
-    }
-
-    private static boolean isHeavyUser(HighwayDrive drive) {
-        return 10 <= drive.getDriver().getCountPerMonth();
-    }
-
-    public static int getRate(HighwayDrive drive) {
-        if (isMiddleUser(drive)) {
+        if (isMiddleUser()) {
             return 30;
         }
 
-        if (isHeavyUser(drive)) {
+        if (isHeavyUser()) {
             return 50;
         }
 
         return 0;
+    }
+
+    private boolean isDiscount() {
+        var routeType = drive.getRouteType();
+        if (!routeType.equals(RouteType.RURAL)) {
+            return false;
+        }
+
+        for (LocalDate date : drive.getDriveDates()) {
+            if (isWeekday(date) && isDiscountTime(date, drive)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isWeekday(LocalDate date) {
+        return !HolidayUtils.isHoliday(date) && !HolidayUtils.isHoliday(date);
+    }
+
+    private boolean isDiscountTime(LocalDate date, HighwayDrive drive) {
+        var morningFrom = LocalTime.of(6, 0);
+        var morningTo = LocalTime.of(9, 0);
+        var eveningFrom = LocalTime.of(17, 0);
+        var eveningTo = LocalTime.of(20, 0);
+
+        return drive.isDriving(date, morningFrom, morningTo)
+                || drive.isDriving(date, eveningFrom, eveningTo);
+    }
+
+    private boolean isMiddleUser() {
+        var count = drive.getDriver().getCountPerMonth();
+
+        return 5 <= count && count <= 9;
+    }
+
+    private boolean isHeavyUser() {
+        var count = drive.getDriver().getCountPerMonth();
+
+        return 10 <= count;
     }
 }

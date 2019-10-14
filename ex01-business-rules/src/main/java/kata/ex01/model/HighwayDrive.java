@@ -18,23 +18,17 @@ public class HighwayDrive implements Serializable {
 
     private Driver driver;
 
-    public boolean isDriving(LocalTime from, LocalTime to) {
-        for (LocalDate date : getDrivingDateRange()) {
-            var rs = date.atTime(from);
-            var re = date.atTime(to);
+    public boolean isDriving(LocalDate date, LocalTime fromTime, LocalTime toTime) {
+        var from = date.atTime(fromTime);
+        var to = date.atTime(toTime);
 
-            if (!(getEnteredAt().isAfter(re) && getExitedAt().isBefore(rs))) {
-                return true;
-            }
-        }
-
-        return false;
+        return !(enteredAt.isAfter(to) || exitedAt.isBefore(from));
     }
 
-    private List<LocalDate> getDrivingDateRange() {
+    public List<LocalDate> getDriveDates() {
         List<LocalDate> dates = new ArrayList<>();
-        dates.add(getEnteredAt().toLocalDate());
-        dates.add(getExitedAt().toLocalDate());
+        dates.add(enteredAt.toLocalDate());
+        dates.add(exitedAt.toLocalDate());
 
         return dates;
     }
@@ -77,9 +71,5 @@ public class HighwayDrive implements Serializable {
 
     public void setDriver(Driver driver) {
         this.driver = driver;
-    }
-
-    public String toString() {
-        return "HighwayDrive(enteredAt=" + this.getEnteredAt() + ", exitedAt=" + this.getExitedAt() + ", vehicleFamily=" + this.getVehicleFamily() + ", routeType=" + this.getRouteType() + ", driver=" + this.getDriver() + ")";
     }
 }

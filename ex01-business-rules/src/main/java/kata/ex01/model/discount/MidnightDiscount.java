@@ -2,17 +2,33 @@ package kata.ex01.model.discount;
 
 import kata.ex01.model.HighwayDrive;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class MidnightDiscount {
-    public static boolean isDiscount(HighwayDrive drive) {
+public class MidnightDiscount extends Discount {
+    public MidnightDiscount(HighwayDrive drive) {
+        super(drive);
+    }
+
+    @Override
+    protected int getRate() {
+        if (!isDiscount()) {
+            return 0;
+        }
+
+        return 30;
+    }
+
+    private boolean isDiscount() {
         var from = LocalTime.of(0, 0);
         var to = LocalTime.of(4, 0);
 
-        return drive.isDriving(from, to);
-    }
+        for (LocalDate date : drive.getDriveDates()) {
+            if (drive.isDriving(date, from, to)) {
+                return true;
+            }
+        }
 
-    public static int getRate() {
-        return 30;
+        return false;
     }
 }
