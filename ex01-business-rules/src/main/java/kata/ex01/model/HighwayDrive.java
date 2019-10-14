@@ -1,8 +1,11 @@
 package kata.ex01.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kawasima
@@ -15,19 +18,25 @@ public class HighwayDrive implements Serializable {
 
     private Driver driver;
 
-    public HighwayDrive() {
+    public boolean isDriving(LocalTime from, LocalTime to) {
+        for (LocalDate date : getDrivingDateRange()) {
+            var rs = date.atTime(from);
+            var re = date.atTime(to);
+
+            if (!(getEnteredAt().isAfter(re) && getExitedAt().isBefore(rs))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public boolean isDriving(LocalTime from, LocalTime to)
-    {
-        var enteredAt = this.getEnteredAt().toLocalDate();
-        var exitedAt = this.getExitedAt().toLocalDate();
-        var threshold = new Threshold(from, to, enteredAt, exitedAt);
+    private List<LocalDate> getDrivingDateRange() {
+        List<LocalDate> dates = new ArrayList<>();
+        dates.add(getEnteredAt().toLocalDate());
+        dates.add(getExitedAt().toLocalDate());
 
-        return ((this.getEnteredAt().isBefore(threshold.getReToday()) || this.getEnteredAt().isEqual(threshold.getReToday()))
-                && (this.getExitedAt().isAfter(threshold.getRsToday()) || this.getExitedAt().isEqual(threshold.getRsToday())))
-                || ((this.getEnteredAt().isBefore(threshold.getReTomorrow()) || this.getEnteredAt().isEqual(threshold.getReTomorrow()))
-                && (this.getExitedAt().isAfter(threshold.getRsTomorrow()) || this.getExitedAt().isEqual(threshold.getRsTomorrow())));
+        return dates;
     }
 
     public LocalDateTime getEnteredAt() {
