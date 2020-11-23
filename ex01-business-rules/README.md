@@ -43,3 +43,4 @@ public interface DisountService {
 
 走行記録はHighwayDriveクラスで表現され、DiscountService#calcに渡されるものとします。
 また、割引率はパーセンテージの正の整数で表現されます。
+複数の割引が適用可能な場合、割引率は一番高いものが適用されます。
